@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarnEvil of Horrors</title>
+    <style>
+        :root
+        {
+            --color-background: #050200;
+            --color-primary: #d4291d;
+            --color-hover: #3d6f4f;
+            --color-active: #050000;
+            --color-blood-red: #8b0000;
+            --color-toxic-green: #39ff14;
+            --color-bone-white: #f8f8ff;
+            --color-shadow-purple: #4a0e4e;
+            
+            --spacing-small: 15px;
+            --spacing-medium: 20px;
+            --spacing-large: 24px;
+            --font-size-base: 16px;
+            --font-size-title: 4rem;
+            --font-size-subtitle: 1.5rem;
+            
+            --transition-speed: 0.3s;
+            --z-index-navigation: 1000;
+            
+            --background-image: url('IMG_0473.jpg');
+            --overlay-opacity: 0.7;
+            
+            --border-width: 3px;
+            --shadow-blur: 20px;
+        }
+        
+        /* Body styles */
+        * 
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body 
+        {
+            background-color: var(--color-background);
+            background-image:
+                linear-gradient(
+                    rgba(5, 2, 0, var(--overlay-opacity)),
+                    rgba(5, 2, 0, var(--overlay-opacity))
+                ),
+                var(--background-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Georgia', serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Navigation container in top right */
+        .site-navigation 
+        {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--spacing-small);
+            z-index: var(--z-index-navigation);
+            background-color: transparent;
+            padding: 10px;
+        }
+        
+        /* Navigation link styles */
+        .nav-btn 
+        {
+            padding: 12px var(--spacing-large);
+            background-color: transparent;
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: var(--font-size-base);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .nav-btn:hover 
+        {
+            color: var(--color-hover);
+            border: 2px solid var(--color-hover);
+            text-shadow: 0 0 10px var(--color-hover);
+        }
+        
+        .nav-btn:active {
+            color: var(--color-active);
+        }
+        
+        /* Base section styles */
+        .content-section 
+        {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px var(--spacing-large);
+            position: relative;
+        }
+        
+        /* Section title styles */
+        .section-title 
+        {
+            font-size: var(--font-size-title);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: var(--spacing-medium);
+            font-family: 'Impact', sans-serif;
+        }
+        
+        .section-subtitle 
+        {
+            font-size: var(--font-size-subtitle);
+            font-style: italic;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        
+        /* Content container for sections */
+        .section-content {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        /* Story paragraph styling */
+        .story-text 
+        {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--color-bone-white);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Warning box */
+        .warning-box 
+        {
+            background-color: rgba(139, 0, 0, 0.3);
+            border: 3px solid var(--color-blood-red);
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 20px var(--color-blood-red);
+        }
+        
+        .warning-title 
+        {
+            color: var(--color-blood-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .warning-text 
+        {
+            color: var(--color-bone-white);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Attraction cards grid */
+        .attractions-grid 
+        {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .attraction-card 
+        {
+            background-color: rgba(5, 2, 0, 0.85);
+            border: 3px solid var(--color-toxic-green);
+            padding: 25px;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+        
+        .attraction-card:hover 
+        {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--color-toxic-green);
+        }
+        
+        .attraction-title 
+        {
+            color: var(--color-toxic-green);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .attraction-description 
+        {
+            color: var(--color-bone-white);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        
+        .tickets-grid 
+        {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .ticket-card 
+        {
+            background-color: rgba(74, 14, 78, 0.6);
+            border: 3px solid var(--color-shadow-purple);
+            padding: 30px;
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 0 15px rgba(74, 14, 78, 0.5);
+        }
+        
+        .ticket-card:hover 
+        {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--color-shadow-purple);
+        }
+        
+        .ticket-type 
+        {
+            color: var(--color-shadow-purple);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .ticket-price 
+        {
+            color: var(--color-bone-white);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .ticket-features 
+        {
+            color: var(--color-bone-white);
+            font-size: 1rem;
+            line-height: 2;
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .ticket-button 
+        {
+            background-color: var(--color-shadow-purple);
+            color: var(--color-bone-white);
+            padding: 15px 30px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .ticket-button:hover 
+        {
+            background-color: var(--color-bone-white);
+            color: var(--color-shadow-purple);
+            box-shadow: 0 0 20px var(--color-bone-white);
+        }
+        
+        
+        #about 
+        {
+            background: linear-gradient
+            (
+                to bottom,
+                rgba(139, 0, 0, 0.3),
+                rgba(5, 2, 0, 0.9)
+            );
+        }
+        
+        #about .section-title 
+        {
+            color: var(--color-blood-red);
+            text-shadow: 
+                0 0 10px var(--color-blood-red),
+                0 0 20px var(--color-blood-red),
+                0 0 30px var(--color-blood-red);
+            animation: bloodPulse 2s ease-in-out infinite;
+        }
+        
+        #about .section-subtitle 
+        {
+            color: var(--color-bone-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        
+        #scares 
+        {
+            background: linear-gradient
+            (
+                to bottom,
+                rgba(5, 2, 0, 0.9),
+                rgba(57, 255, 20, 0.2)
+            );
+        }
+        
+        #scares .section-title 
+        {
+            color: var(--color-toxic-green);
+            text-shadow: 
+                0 0 10px var(--color-toxic-green),
+                0 0 20px var(--color-toxic-green),
+                0 0 40px var(--color-toxic-green);
+            animation: flicker 3s ease-in-out infinite;
+        }
+        
+        #scares .section-subtitle 
+        {
+            color: var(--color-bone-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        
+        #tickets 
+        {
+            background: linear-gradient
+            (
+                to bottom,
+                rgba(57, 255, 20, 0.2),
+                rgba(74, 14, 78, 0.4)
+            );
+        }
+        
+        #tickets .section-title 
+        {
+            color: var(--color-shadow-purple);
+            text-shadow: 
+                0 0 10px var(--color-shadow-purple),
+                0 0 20px var(--color-shadow-purple),
+                2px 2px 4px rgba(255, 255, 255, 0.3);
+            animation: shake 4s ease-in-out infinite;
+        }
+        
+        #tickets .section-subtitle 
+        {
+            color: var(--color-bone-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Animations */
+        @keyframes bloodPulse 
+        {
+            0%, 100% 
+            {
+                text-shadow: 
+                    0 0 10px var(--color-blood-red),
+                    0 0 20px var(--color-blood-red),
+                    0 0 30px var(--color-blood-red);
+            }
+            50% 
+            {
+                text-shadow: 
+                    0 0 20px var(--color-blood-red),
+                    0 0 30px var(--color-blood-red),
+                    0 0 40px var(--color-blood-red),
+                    0 0 50px var(--color-blood-red);
+            }
+        }
+        
+        @keyframes flicker 
+        {
+            0%, 100% 
+            {
+                opacity: 1;
+            }
+            41.99% 
+            {
+                opacity: 1;
+            }
+            42% 
+            {
+                opacity: 0.3;
+            }
+            43% 
+            {
+                opacity: 1;
+            }
+            45.99% 
+            {
+                opacity: 1;
+            }
+            46% 
+            {
+                opacity: 0.5;
+            }
+            46.5% 
+            {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes shake 
+        {
+            0%, 100% 
+            {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% 
+            {
+                transform: translateX(-2px);
+            }
+            20%, 40%, 60%, 80% 
+            {
+                transform: translateX(2px);
+            }
+        }
+        
+        
+        .section-border 
+        {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient
+            (
+                to right,
+                transparent,
+                var(--color-primary),
+                transparent
+            );
+        }
+        /* Fog overlay effect */
+.fog-overlay 
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.3;
+}
+
+.fog 
+{
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient
+    (
+        to right,
+        transparent,
+        rgba(200, 200, 200, 0.1),
+        transparent
+    );
+    animation: fogMove 20s linear infinite;
+}
+
+.fog:nth-child(2) 
+{
+    animation-duration: 30s;
+    animation-delay: -10s;
+}
+
+@keyframes fogMove 
+{
+    from 
+    {
+        transform: translateX(-50%);
+    }
+    to 
+    {
+        transform: translateX(0);
+    }
+}
+
+/* Blood drip container */
+.blood-drips 
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.blood-drip 
+{
+    position: absolute;
+    width: 8px;
+    background: linear-gradient(
+        to bottom,
+        var(--color-blood-red),
+        transparent
+    );
+    animation: drip 3s linear infinite;
+    opacity: 0;
+}
+
+@keyframes drip 
+{
+    0% 
+    {
+        opacity: 0;
+        height: 0;
+        top: 0;
+    }
+    10% 
+    {
+        opacity: 1;
+    }
+    90% 
+    {
+        opacity: 1;
+    }
+    100% 
+    {
+        opacity: 0;
+        height: 100px;
+        top: 100%;
+    }
+}
+
+/* Glitch effect */
+.glitch 
+{
+    position: relative;
+    display: inline-block;
+}
+
+.glitch.active::before,
+.glitch.active::after 
+{
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch.active::before 
+{
+    animation: glitch-1 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    color: var(--color-toxic-green);
+    z-index: -1;
+}
+
+.glitch.active::after 
+{
+    animation: glitch-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+    color: var(--color-blood-red);
+    z-index: -2;
+}
+
+@keyframes glitch-1 
+{
+    0% 
+    {
+        transform: translateX(0);
+    }
+    20% 
+    {
+        transform: translateX(-2px);
+    }
+    40% 
+    {
+        transform: translateX(2px);
+    }
+    60% 
+    {
+        transform: translateX(-2px);
+    }
+    80% 
+    {
+        transform: translateX(2px);
+    }
+    100% 
+    {
+        transform: translateX(0);
+    }
+}
+
+@keyframes glitch-2 
+{
+    0% 
+    {
+        transform: translateX(0);
+    }
+    20% 
+    {
+        transform: translateX(2px);
+    }
+    40% 
+    {
+        transform: translateX(-2px);
+    }
+    60% 
+    {
+        transform: translateX(2px);
+    }
+    80% 
+    {
+        transform: translateX(-2px);
+    }
+    100% 
+    {
+        transform: translateX(0);
+    }
+}
+
+/* Screen flicker effect */
+.flicker-screen 
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+}
+
+.flicker-screen.active 
+{
+    animation: screenFlicker 0.1s;
+}
+
+@keyframes screenFlicker 
+{
+    0%, 100% 
+    {
+        opacity: 0;
+    }
+    50% 
+    {
+        opacity: 1;
+    }
+}
+
+/* Shake effect on hover */
+.shakeable:hover 
+{
+    animation: shake-hover 0.5s;
+}
+
+@keyframes shake-hover 
+{
+    0%, 100% 
+    {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% 
+    {
+        transform: translateX(-3px) rotate(-1deg);
+    }
+    20%, 40%, 60%, 80% 
+    {
+        transform: translateX(3px) rotate(1deg);
+    }
+}
+    </style>
+</head>
+<body>
+    
+    <div class="fog-overlay">
+        <div class="fog"></div>
+        <div class="fog"></div>
+    </div>
+    
+    
+    <div class="blood-drips" id="bloodDripsContainer"></div>
+    
+
+    <div class="flicker-screen" id="flickerScreen"></div>
+    
+    <nav class="site-navigation">
+        <a href="#about" class="nav-btn">About</a>
+        <a href="#scares" class="nav-btn">Scares</a>
+        <a href="#tickets" class="nav-btn">Tickets</a>
+    </nav>
+    
+    <section id="about" class="content-section">
+        <h1 class="section-title glitch shakeable" data-text="CarnEvil of Horrors">Escape the CarnEvil of Horrors</h1>
+        <p class="section-subtitle">
+            Where every choice leads to terror, and escape is never guaranteed.
+        </p>
+        
+        <div class="section-content">
+            <p class="story-text">
+                The carnival appeared overnight, its twisted rides and flickering lights 
+                casting eerie shadows across the abandoned fairgrounds. No one remembers 
+                when it first arrived, but everyone knows the rules: once you enter, 
+                the only way out is to survive until dawn.
+            </p>
+            
+            <p class="story-text">
+                Every path you choose determines your fate. Will you escape through the 
+                Hall of Mirrors? Risk the Tunnel of Terror? Or brave the mysterious 
+                Big Top where laughter turns to screams? Your decisions matter here, 
+                and the carnival never forgets.
+            </p>
+            
+            <div class="warning-box shakeable">
+                <div class="warning-title">⚠ Warning ⚠</div>
+                <p class="warning-text">
+                    This carnival is not responsible for nightmares, disappearances, 
+                    or permanent psychological changes. Enter at your own risk. 
+                    Children must be accompanied by someone braver than themselves.
+                </p>
+            </div>
+        </div>
+        
+        <div class="section-border"></div>
+    </section>
+    
+    <section id="scares" class="content-section">
+        <h1 class="section-title glitch shakeable" data-text="Choose Your Terror">Choose Your Terror</h1>
+        <p class="section-subtitle">
+            Five attractions of pure horror await. Each choice determines your fate.
+        </p>
+        
+        <div class="section-content">
+            <div class="attractions-grid">
+                <div class="attraction-card shakeable">
+                    <h3 class="attraction-title">The Funhouse of Fear</h3>
+                    <p class="attraction-description">
+                        Distorted mirrors show reflections that move on their own. 
+                        Tilting floors lead you deeper into madness. The laughter 
+                        you hear isn't recorded—it's coming from something inside.
+                    </p>
+                </div>
+                
+                <div class="attraction-card shakeable">
+                    <h3 class="attraction-title">Madame Zala's Fortune</h3>
+                    <p class="attraction-description">
+                        The fortune teller knows your future, but her predictions 
+                        come with a terrible price. Her crystal ball shows things 
+                        you wish you could unsee. Will you ask about your fate?
+                    </p>
+                </div>
+                
+                <div class="attraction-card shakeable">
+                    <h3 class="attraction-title">The Carousel of Screams</h3>
+                    <p class="attraction-description">
+                        Painted horses with eyes that follow you. Once the music 
+                        starts, you can't get off. Round and round, faster and faster, 
+                        while the world blurs into nightmare.
+                    </p>
+                </div>
+                
+                <div class="attraction-card shakeable">
+                    <h3 class="attraction-title">Tunnel of No Return</h3>
+                    <p class="attraction-description">
+                        A winding dark passage where whispers echo off wet walls. 
+                        Strange creatures lurk in the shadows. Multiple exits exist, 
+                        but only one leads to freedom. Choose wisely.
+                    </p>
+                </div>
+                
+                <div class="attraction-card shakeable">
+                    <h3 class="attraction-title">The Big Top Nightmare</h3>
+                    <p class="attraction-description">
+                        Clowns perform impossible acts under the spotless tent. 
+                        Their smiles are too wide, their tricks too real. The audience 
+                        never leaves, and soon you'll understand why.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-border"></div>
+    </section>
+    
+    <section id="tickets" class="content-section">
+        <h1 class="section-title glitch shakeable" data-text="Claim Your Fate">Claim Your Fate</h1>
+        <p class="section-subtitle">
+            Every ticket is a contract. Once purchased, there's no turning back.
+        </p>
+        
+        <div class="section-content">
+            <div class="tickets-grid">
+                <div class="ticket-card shakeable">
+                    <h3 class="ticket-type">Scaredy Cat</h3>
+                    <div class="ticket-price">$13.00</div>
+                    <ul class="ticket-features">
+                        <li>✓ Basic Entry</li>
+                        <li>✓ 2 Attraction Access</li>
+                        <li>✓ Exit Map Provided</li>
+                        <li>✓ Nightlight Included</li>
+                    </ul>
+                    <button class="ticket-button">Get Ticket</button>
+                </div>
+                
+                <div class="ticket-card shakeable">
+                    <h3 class="ticket-type">Brave Soul</h3>
+                    <div class="ticket-price">$31.00</div>
+                    <ul class="ticket-features">
+                        <li>✓ Full Carnival Access</li>
+                        <li>✓ All 5 Attractions</li>
+                        <li>✓ Fast Pass Entry</li>
+                        <li>✓ Survival Guide</li>
+                    </ul>
+                    <button class="ticket-button">Get Ticket</button>
+                </div>
+                
+                <div class="ticket-card shakeable">
+                    <h3 class="ticket-type">Fearless</h3>
+                    <div class="ticket-price">$66.60</div>
+                    <ul class="ticket-features">
+                        <li>✓ VIP Nightmare Access</li>
+                        <li>✓ Unlimited Re-entries</li>
+                        <li>✓ Behind-the-Screams Tour</li>
+                        <li>✓ Good Luck Charm</li>
+                    </ul>
+                    <button class="ticket-button">Get Ticket</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-border"></div>
+    </section>
+
+    <script src="effects.js"></script>
+</body>
+</html>

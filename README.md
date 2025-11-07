@@ -8,7 +8,7 @@ This project creates an interactive horror-themed carnival experience with vario
 
 ## Files
 
-- `Spooky_Challenge.html` - Main HTML file with the horror carnival layout
+- `CarnEvil_of_Horrors.html` - Main HTML file with the horror carnival layout
 - `effects.js` - JavaScript file containing spooky effects and animations
 
 ## Features
